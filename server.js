@@ -2,13 +2,13 @@ const express = require('express');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const cookieParser = require('cookie-parser');
-/*const cors = require('cors');
+const cors = require('cors');
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 const xss = require('xss-clean');
 const rateLimit = require('express-rate-limit');
 const hpp = require('hpp');
-const swaggerJsDoc = require('swagger-jsdoc');
+/*const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUI = require('swagger-ui-express');
 */
 
@@ -21,13 +21,13 @@ const auth = require('./routes/auth');
 dotenv.config({path:'./config/config.env'});
 //Connect to database
 connectDB();
-/*
+
 //Rate Limiter
 const limiter = rateLimit({
     windowsMs: 10*60*1000, //10 mins
     max: 100
 });
-
+/*
 //Swagger Options
 const swaggerOptions = {
     swaggerDefinition:{
@@ -52,12 +52,13 @@ const app = express();
 app.use(express.json()); //Body parser
 app.use(cookieParser()); //Cookie parser
 
-/*app.use(cors()); //Enable CORS
+app.use(cors()); //Enable CORS
 app.use(mongoSanitize()); //Sanitize data
 app.use(helmet()); //Set security headers
 app.use(xss()); //Prevent XSS attacks
 app.use(limiter); //Rate Limiting
 app.use(hpp()); //Prevent http param pollutions
+/*
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs)); //Use Swagger
 */
 
