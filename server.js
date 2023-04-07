@@ -1,9 +1,8 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
-
-/*const cookieParser = require('cookie-parser');
-const cors = require('cors');
+const cookieParser = require('cookie-parser');
+/*const cors = require('cors');
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 const xss = require('xss-clean');
@@ -11,11 +10,12 @@ const rateLimit = require('express-rate-limit');
 const hpp = require('hpp');
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUI = require('swagger-ui-express');
+*/
 
 //Route files
-const hospitals = require('./routes/hospitals');
-const appointments = require('./routes/appointments');
-const auth = require('./routes/auth');*/
+const hotels = require('./routes/hotels');
+const bookings = require('./routes/bookings');
+const auth = require('./routes/auth');
 
 //Load env vars
 dotenv.config({path:'./config/config.env'});
@@ -48,9 +48,11 @@ const swaggerOptions = {
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 */
 const app = express();
-/*app.use(cors()); //Enable CORS
+
 app.use(express.json()); //Body parser
 app.use(cookieParser()); //Cookie parser
+
+/*app.use(cors()); //Enable CORS
 app.use(mongoSanitize()); //Sanitize data
 app.use(helmet()); //Set security headers
 app.use(xss()); //Prevent XSS attacks
@@ -58,16 +60,12 @@ app.use(limiter); //Rate Limiting
 app.use(hpp()); //Prevent http param pollutions
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs)); //Use Swagger
 */
-app.get('/', (req,res) => {
-    console.log("test output here")
-    res.status(200).send("Hello Hotel");
-});
-/*
+
 //Mount routers
-app.use('/api/v1/hospitals', hospitals);
-app.use('/api/v1/appointments', appointments);
+app.use('/api/v1/hotels', hotels);
+app.use('/api/v1/bookings', bookings);
 app.use('/api/v1/auth', auth);
-*/
+
 const PORT = process.env.PORT || 6000;
 
 const server = app.listen(PORT, console.log('Server running in ', process.env.NODE_ENV, ' mode on port ', PORT));
