@@ -105,3 +105,6 @@ dist
 
 # ignore config file
 config/config.env
+
+# ignore shortnote and text file
+*.txt
