@@ -1,0 +1,1 @@
+Import Data from .csv to MongoDB atlas script:./mongoimport --uri mongodb+srv://SWDevHotel:SWDevHotel@swdevhotel.fo0sp1b.mongodb.net/SWDevHotel --collection hotels --type csv --file hotel_collection_clean.csv --headerline

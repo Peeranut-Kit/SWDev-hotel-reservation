@@ -8,9 +8,17 @@ const HotelSchema = new mongoose.Schema({
         trim: true,
         maxlength: [50, 'Name can not be more than 50 characters']
     },
+    subtypes: {
+        type: String,
+        required: [true, 'Please add subtypes']
+    },
     address: {
         type: String,
         required: [true, 'Please add an address']
+    },
+    sub_district: {
+        type: String,
+        required: [true, 'Please add a sub-district']
     },
     district: {
         type: String,
@@ -20,15 +28,33 @@ const HotelSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please add a province']
     },
-    postalcode: {
+    postal_code: {
         type: String,
         required: [true, 'Please add a postalcode'],
         maxlength: [5, 'Postal Code can not be more than 5 digits']
     },
-    tel: {
+    country: {
         type: String,
-        required: [true, 'Please add a region']
+        required: [true, 'Please add a country']
     },
+    latitude: {
+        type: Number,
+        required: [true, 'Please add a latitude']
+    },
+    longitude: {
+        type:  Number,
+        required: [true, 'Please add a longitude']
+    },
+    phone: {
+        type: String,
+        required: [true, 'Please add a phone number']
+    },
+    site: {
+        type: String,
+    },
+    description: {
+        type: String
+    }
 }, {
     toJSON: {virtuals: true},
     toObject: {virtuals: true}
