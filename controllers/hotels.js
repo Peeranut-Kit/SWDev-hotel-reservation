@@ -122,9 +122,11 @@ exports.deleteHotel= async (req,res,next)=>{
         if(!hotel){
             return res.status(400).json({success:false, message: `Bootcamp not found with id of ${req.params.id}`});
         }
-        hotel.remove();
+
+        await Hotel.findByIdAndRemove(req.params.id);
         res.status(200).json({success:true, data:{} });
     } catch (err) {
+        console.log(err)
         res.status(400).json({success:false});
     }
 };
