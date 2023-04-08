@@ -5,11 +5,9 @@ const BookingSchema = new mongoose.Schema({
         type: Date,
         required: true
     },
-    duration: {
-        type: Number,
+    leaveDate: {
+        type: Date,
         required: true,
-        min: [1, 'At least one night has to be booked'],
-        max: [3, 'Maximum 3 nights']
     },
     user: {
         type: mongoose.Schema.ObjectId,
