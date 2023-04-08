@@ -10,13 +10,13 @@ exports.getBookings= async (req,res,next)=>{
     //General users can see only their bookings!
     if (req.user.role !== 'admin') {
         query = Booking.find( { user: req.user.id} ).populate({
-            path: 'hospital',
+            path: 'hotel',
             select: 'name province tel'
         });
     }
     else { //If you are an admin, you can see all!
         query = Booking.find().populate({
-            path: 'hospital',
+            path: 'hotel',
             select: 'name province tel'
         });
     }
@@ -41,7 +41,7 @@ exports.getBookings= async (req,res,next)=>{
 exports.getBooking= async (req,res,next)=>{
     try {
         const booking = await Booking.findById(req.params.id).populate({
-            path: 'hospital',
+            path: 'hotel',
             select: 'name description tel'
         });
         if(!booking){
@@ -58,19 +58,37 @@ exports.getBooking= async (req,res,next)=>{
 };
 
 //@desc     Add booking
-//@route    POST /api/v1/hospitals/:hospitalId/booking
+//@route    POST /api/v1/hotels/:hotelId/booking
 //@access   Private
 exports.addBooking= async (req,res,next)=>{
     try {
-        req.body.hospital = req.params.hospitalId;
-        const hospital = await Hospital.findById(req.params.hospitalId);
+        req.body.hotel = req.params.hotelId;
+        const hotel = await Hotel.findById(req.params.hotelId);
 
-        if (!hospital) {
-            return res.status(404).json({ success: false, message: `No hospital with the id of ${req.params.hospitalId}`});
+        if (!hotel) {
+            return res.status(404).json({ success: false, message: `No hotel with the id of ${req.params.hotelId}`});
         }
 
         //Add user Id to req.body
         req.body.user = req.user.id;
+        //Check if the duration is longer than 3 nights
+        const start = new Date(req.body.bookDate);
+        const stop = new Date(req.body.leaveDate);
+        const timeDiff = stop.getTime() - start.getTime();
+        duration =  timeDiff / (1000*60*60*24);
+        if (duration > 3) {
+            return res.status(400).json({
+                success: false,
+                message: 'The booking duration cannot be more than 3 nights'
+            });
+        }
+        if (duration < 1) {
+            return res.status(400).json({
+                success: false,
+                message: 'The booking duration cannot be less than 1 nights'
+            });
+        }
+
         //Check for existed booking
         const existedBookings = await Booking.find( {user: req.user.id} );
         //If the user is not an admin, they can only create 3 bookings.
@@ -81,7 +99,7 @@ exports.addBooking= async (req,res,next)=>{
             });
         }
 
-         const booking = await Booking.create(req.body);
+        const booking = await Booking.create(req.body);
         res.status(200).json({
             success: true,
             data: booking
@@ -110,6 +128,24 @@ exports.updateBooking= async (req,res,next)=>{
             });
         }
 
+        //Check if the duration is longer than 3 nights
+        const start = new Date(req.body.bookDate);
+        const stop = new Date(req.body.leaveDate);
+        const timeDiff = stop.getTime() - start.getTime();
+        duration =  timeDiff / (1000*60*60*24);
+        if (duration > 3) {
+            return res.status(400).json({
+                success: false,
+                message: 'The booking duration cannot be more than 3 nights'
+            });
+        }
+        if (duration < 1) {
+            return res.status(400).json({
+                success: false,
+                message: 'The booking duration cannot be less than 1 nights'
+            });
+        }
+        
         booking = await Booking.findByIdAndUpdate(req.params.id, req.body, {
             new: true,
             runValidators: true
