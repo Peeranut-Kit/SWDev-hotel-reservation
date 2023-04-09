@@ -15,8 +15,11 @@ const ReviewSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
-  review: {
+  title: {
     type: String
+  },
+  description: {
+    type: String,
   },
   createdAt: {
     type: Date,
