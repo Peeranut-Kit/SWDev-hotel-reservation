@@ -54,7 +54,7 @@ const HotelSchema = new mongoose.Schema({
     },
     description: {
         type: String
-    }
+    },
 }, {
     toJSON: {virtuals: true},
     toObject: {virtuals: true}

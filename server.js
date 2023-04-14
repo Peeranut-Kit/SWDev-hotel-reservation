@@ -67,7 +67,7 @@ app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs)); //Use Swagg
 app.use('/api/v1/hotels', hotels);
 app.use('/api/v1/bookings', bookings);
 app.use('/api/v1/auth', auth);
-app.use('/api/v1/review', reviews);
+app.use('/api/v1/reviews', reviews);
 
 const PORT = process.env.PORT || 6000;
 

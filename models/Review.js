@@ -6,11 +6,6 @@ const ReviewSchema = new mongoose.Schema({
     ref: 'User',
     required: true
   },
-  hotel: {
-    type: mongoose.Schema.ObjectId,
-    ref: 'Hotel',
-    required: true
-  },
   booking: {
     type: mongoose.Schema.ObjectId,
     ref: 'Booking',
@@ -18,7 +13,9 @@ const ReviewSchema = new mongoose.Schema({
   },
   score: {
     type: Number,
-    required: true
+    required: [true, 'Please add a review score'],
+    min: [0, 'Please rate in range 1 - 10'],
+    max: [10,'Please rate in range 1 - 10'],
   },
   title: {
     type: String

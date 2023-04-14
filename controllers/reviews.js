@@ -5,15 +5,15 @@ const Booking = require('../models/Booking');
 //@route  GET /api/v1/reviews
 //@access Public
 exports.getReviews = async (req, res, next) => {
-  let query;
+  // let query;
 
-  query = Review.find().populate({
-    path: 'hotel',
-    select: 'name'
-  });
+  // query = Review.find().populate({
+  //   path: 'hotel',
+  //   select: 'name'
+  // });
 
   try {
-    const reviews = await query;
+    const reviews = await Review.find();
     res.status(200).json({
       success : true,
       count: reviews.length,
@@ -27,6 +27,7 @@ exports.getReviews = async (req, res, next) => {
 
 //@desc   Get single review
 //@route  Get /api/v1/reviews/:id
+//@access Public
 exports.getReview = async (req, res, next) => {
   try {
     const review = await Review.findById(req.params.id).populate({
@@ -36,6 +37,10 @@ exports.getReview = async (req, res, next) => {
     if(!review) {
       return res.status(400).json({success: false, message:`No review with the id of ${req.params.id}`});
     }
+    res.status(200).json({
+      success: true,
+      data: review
+  });
   } catch (error) {
     console.log(error);
     res.status(400).json({success:false, message:"Cannot find Review"});
@@ -43,7 +48,7 @@ exports.getReview = async (req, res, next) => {
 }
 
 //@desc   Add review
-//@route  POST /api/v1/bookings/:bookingId/review
+//@route  POST /api/v1/bookings/:bookingId/reviews
 //@access Private
 exports.addReview = async (req, res, next) => {
   try {
@@ -54,7 +59,7 @@ exports.addReview = async (req, res, next) => {
     }
 
     //Make sure user is the booking owner
-    if(booking.user.toString() !== req.user.id && req.user.role !== 'admin') {
+    if(booking.user.toString() !== req.user.id) {
       return res.status(401).json({
         success: false,
         message: `User ${req.user.id} is not authorized to review this booking`
@@ -74,7 +79,7 @@ exports.addReview = async (req, res, next) => {
 }
 
 //@desc   Update review
-//@route  PUT /api/v1/review/:id
+//@route  PUT /api/v1/reviews/:id
 //@access Private
 exports.updateReview = async (req, res, next) => {
   try {
