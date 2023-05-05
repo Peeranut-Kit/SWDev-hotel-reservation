@@ -6,9 +6,15 @@ The system is a hotel booking system which allows the registered user to book up
 
 Multiple diagrams are presented here:
 - ER diagram: https://drive.google.com/file/d/1gRR3IDJVzImXyEGdrfJw-dsvJ4h3bcMM/view?usp=sharing
+- Class diagram: https://drive.google.com/file/d/1ViJe5JReFJM3mAYAPzrKAdH0QTmF3dIF/view?usp=sharing
+- Use Case diagram: https://drive.google.com/file/d/1gRR3IDJVzImXyEGdrfJw-dsvJ4h3bcMM/view?usp=sharing
+- Sequence diagram
+    - hotel: https://drive.google.com/file/d/1GnRjjLArrH4669NQotpxcu9MOH5V_1RE/view?usp=sharing
+    - booking: https://drive.google.com/file/d/1xHoeCyBLOnbY6ZFKSu3HdPeEGOjp7gml/view?usp=sharing
+    - user: https://drive.google.com/file/d/1h5PRr7OOJ_-H-TExXrWMdtHUuzOn6CC8/view?usp=sharing
 
 Import Data from .csv to MongoDB atlas script:
-./mongoimport --uri mongodb+srv://SWDevHotel:SWDevHotel@swdevhotel.fo0sp1b.mongodb.net/SWDevHotel --collection hotels --type csv --file hotel_collection_clean.csv --headerline
+./mongoimport --uri mongodb+srv://<user>:<password>@swdevhotel.fo0sp1b.mongodb.net/SWDevHotel --collection hotels --type csv --file hotel_collection_clean.csv --headerline
 
 สิ่งที่แก้จาก code เดิม
 1.	เปลี่ยน hospital เป็น hotel, เปลี่ยน appointment เป็น booking
