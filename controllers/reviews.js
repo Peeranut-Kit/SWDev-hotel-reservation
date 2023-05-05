@@ -57,15 +57,8 @@ exports.addReview = async (req, res, next) => {
     if(isNaN(score) || score < 0 || score > 10) {
       return res.status(200).json({ success: false, message: 'Please rate the booking in range 0-10'});
     }
-    
     req.body.booking = req.params.bookingId;
     const booking = await Booking.findById(req.params.bookingId);
-    const hotelId = await Booking.findById(req.params.bookingId).populate({
-      path: 'hotel',
-      select: '_id'
-    });
-    const hotel = await Hotel.findById(hotelId);
-    console.log('hotel', hotel);
 
     if(!booking) {
       return res.status(404).json({ success: false, message: `No booking with the id of ${req.params.bookingId}`});
@@ -82,8 +75,17 @@ exports.addReview = async (req, res, next) => {
     //Add user Id to req.body
     req.body.user = req.user.id;
 
+    //Update hotel review score
+    const hotel = await Hotel.findById(booking.hotel.toString());
+    const new_count = hotel.review_count + 1;
+    const new_score = (hotel.score + score) / new_count;
+    await Hotel.findByIdAndUpdate(booking.hotel.toString(), {"review_count" : new_count, "score" : new_score});
+
+    
     const review = await Review.create(req.body);
-    res.status(200).json({ success: true, data: review })
+    //Update review in booking
+    await Booking.findByIdAndUpdate(req.params.bookingId, {"review" : review._id});
+    res.status(200).json({ success: true, data: review });
 
   } catch (error) {
     console.log(error);
@@ -107,6 +109,20 @@ exports.updateReview = async (req, res, next) => {
         success: false,
         message: `User ${req.user.id} is not authorized to update this review`
       });
+    }
+
+    //If user update review score then update hotel review score
+    if(req.body.score) {
+      const score = parseInt(req.body.score);
+      if(isNaN(score) || score < 0 || score > 10) {
+        return res.status(200).json({ success: false, message: 'Please rate the booking in range 0-10'});
+      }
+
+      const booking = await Booking.findById(review.booking.toString());
+      const hotelId = booking.hotel;
+      const hotel = await Hotel.findById(hotelId.toString());
+      const new_score = (hotel.score + score - review.score);
+      await Hotel.findByIdAndUpdate(hotelId.toString(), {"score" : new_score});
     }
 
     review = await Review.findByIdAndUpdate(req.params.id, req.body, {
@@ -139,7 +155,17 @@ exports.deleteReview= async (req,res,next)=>{
               message: `User ${req.user.id} is not authorized to delete this review`
           });
       }
-      
+
+      //Re-Calculate review score
+      const booking = await Booking.findById(review.booking.toString());
+      const hotelId = booking.hotel;
+      const hotel = await Hotel.findById(hotelId.toString());
+      const new_count = hotel.review_count - 1;
+      const new_score = (hotel.score * hotel.review_count - review.score) / new_count;
+      await Hotel.findByIdAndUpdate(hotelId.toString(), {"review_count" : new_count, "score" : new_score});
+
+      //Update review in booking
+      await Booking.findByIdAndUpdate(req.params.bookingId, {"review" : null});
       review.remove();
       res.status(200).json({
           success: true,

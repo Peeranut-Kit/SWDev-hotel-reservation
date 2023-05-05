@@ -55,11 +55,15 @@ const HotelSchema = new mongoose.Schema({
     description: {
         type: String
     },
+    review_count: {
+        type: Number,
+        default: 0,
+    },
     score: {
         type: Number,
         default: 0,
-        min: [0, 'Please rate in range 1 - 10'],
-        max: [10,'Please rate in range 1 - 10'],
+        min: [0, 'Please rate in range 0 - 10'],
+        max: [10,'Please rate in range 0 - 10'],
     }
 }, {
     toJSON: {virtuals: true},
