@@ -16,3 +16,4 @@ Import Data from .csv to MongoDB atlas script:
 3.	ใช้ Outscraper scrape data hotel ใน Bangkok มา 500 data แล้ว import ไป excel แล้วเอา .csv file import เข้า MongoDB โดย mongoimport command
 4.	เพิ่ม field leaveDate ใน model Booking + แก้ ER
 5.	add logic ให้ duration การจองไม่เกิน 3 วันและอย่างน้อย 1 วัน
+6.  feature review โดยมีทั้ง score และ description โดย score จะไปแสดงเป็นค่าเฉลี่ยที่ collection hotel
