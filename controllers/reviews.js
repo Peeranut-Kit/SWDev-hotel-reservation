@@ -1,19 +1,20 @@
 const Review = require('../models/Review');
 const Booking = require('../models/Booking');
+const Hotel = require('../models/Hotel');
 
 //@desc   Get all reviews
 //@route  GET /api/v1/reviews
 //@access Public
 exports.getReviews = async (req, res, next) => {
-  // let query;
+  let query;
 
-  // query = Review.find().populate({
-  //   path: 'hotel',
-  //   select: 'name'
-  // });
+  query = Review.find().populate({
+    path: 'booking',
+    select: 'hotel'
+  });
 
   try {
-    const reviews = await Review.find();
+    const reviews = await query;
     res.status(200).json({
       success : true,
       count: reviews.length,
@@ -31,8 +32,8 @@ exports.getReviews = async (req, res, next) => {
 exports.getReview = async (req, res, next) => {
   try {
     const review = await Review.findById(req.params.id).populate({
-      path: 'hotel',
-      select: 'name'
+      path: 'booking',
+      select: 'hotel'
     });
     if(!review) {
       return res.status(400).json({success: false, message:`No review with the id of ${req.params.id}`});
@@ -52,8 +53,20 @@ exports.getReview = async (req, res, next) => {
 //@access Private
 exports.addReview = async (req, res, next) => {
   try {
+    const score = parseInt(req.body.score);
+    if(isNaN(score) || score < 0 || score > 10) {
+      return res.status(200).json({ success: false, message: 'Please rate the booking in range 0-10'});
+    }
+    
     req.body.booking = req.params.bookingId;
     const booking = await Booking.findById(req.params.bookingId);
+    const hotelId = await Booking.findById(req.params.bookingId).populate({
+      path: 'hotel',
+      select: '_id'
+    });
+    const hotel = await Hotel.findById(hotelId);
+    console.log('hotel', hotel);
+
     if(!booking) {
       return res.status(404).json({ success: false, message: `No booking with the id of ${req.params.bookingId}`});
     }
