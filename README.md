@@ -17,3 +17,6 @@ Import Data from .csv to MongoDB atlas script:
 4.	เพิ่ม field leaveDate ใน model Booking + แก้ ER
 5.	add logic ให้ duration การจองไม่เกิน 3 วันและอย่างน้อย 1 วัน
 6.  feature review โดยมีทั้ง score และ description โดย score จะไปแสดงเป็นค่าเฉลี่ยที่ collection hotel
+
+Additionnal Requirement : Review hotel
+Link : https://youtu.be/IIO7AqkJfYg

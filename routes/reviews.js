@@ -9,7 +9,7 @@ router.route('/')
     .post(protect, authorize('user'), addReview);
 router.route('/:id')
     .get(protect, getReview)
-    .put(protect, authorize('admin', 'user'), updateReview)
-    .delete(protect, authorize('admin', 'user'), deleteReview);
+    .put(protect, authorize('user'), updateReview)
+    .delete(protect, authorize('user'), deleteReview);
 
 module.exports = router;

@@ -161,11 +161,14 @@ exports.deleteReview= async (req,res,next)=>{
       const hotelId = booking.hotel;
       const hotel = await Hotel.findById(hotelId.toString());
       const new_count = hotel.review_count - 1;
-      const new_score = (hotel.score * hotel.review_count - review.score) / new_count;
+      let new_score = 0;
+      if(new_count !== 0) {
+        new_score = ((hotel.score * hotel.review_count) - review.score) / new_count;
+      } 
       await Hotel.findByIdAndUpdate(hotelId.toString(), {"review_count" : new_count, "score" : new_score});
 
       //Update review in booking
-      await Booking.findByIdAndUpdate(req.params.bookingId, {"review" : null});
+      await Booking.findByIdAndUpdate(req.params.bookingId, {"review" : undefined});
       review.remove();
       res.status(200).json({
           success: true,
