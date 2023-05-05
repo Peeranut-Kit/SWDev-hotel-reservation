@@ -58,7 +58,7 @@ exports.getBooking= async (req,res,next)=>{
 };
 
 //@desc     Add booking
-//@route    POST /api/v1/hotels/:hotelId/booking
+//@route    POST /api/v1/hotels/:hotelId/bookings
 //@access   Private
 exports.addBooking= async (req,res,next)=>{
     try {
